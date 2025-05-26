@@ -37,4 +37,4 @@ const director1: Directors = {
 
 console.log(teacher3);
 console.log(director1);
-console.log(printTeacher("Damien","Billot")); // Should print: J. Doe 
+console.log(printTeacher("Damien","Billot"));
