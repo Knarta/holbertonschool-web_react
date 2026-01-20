@@ -10,7 +10,6 @@
     "build": "webpack"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "jquery": "^4.0.0",
