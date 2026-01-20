@@ -1,16 +1,15 @@
 {
-  "name": "task_2",
+  "name": "task_3",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start-dev": "webpack serve --mode development"
+    "start-dev": "webpack serve --open"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^7.1.2",
@@ -25,5 +24,6 @@
   "dependencies": {
     "jquery": "^3.7.1",
     "lodash": "^4.17.21"
-  }
+  },
+  "description": ""
 }
