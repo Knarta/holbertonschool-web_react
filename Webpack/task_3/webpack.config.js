@@ -16,7 +16,13 @@ module.exports = {
   devtool: 'inline-source-map',
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
     },
   },
   devServer: {
