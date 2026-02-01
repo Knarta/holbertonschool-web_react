@@ -1,10 +1,6 @@
 import { render, screen } from '@testing-library/react';
+import { expect, test, jest } from "@jest/globals";
 import Notifications from './Notifications';
-
-
-jest.mock('./utils.js', () => ({
-    getLatestNotification: () => '<strong>Urgent requirement</strong> - complete by EOD'
-}));
 
 
 test("Notifications exists", () => {
