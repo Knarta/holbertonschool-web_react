@@ -13,7 +13,7 @@ function Notifications() {
                     <li data-priority="urgent" dangerouslySetInnerHTML={{ __html: getLatestNotification() }}></li>
                 </ul>
                 <button aria-label="Close" onClick={() => console.log('Close button has been clicked')}>
-                    <img src={closeIcon} alt="close button" />
+                    <img src="./assets/closeIcon.png" />
                 </button>
         </div>
      );

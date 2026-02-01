@@ -13,7 +13,7 @@ function App() {
       </div>
       <div className="App">
         <div className="App-header">
-          <img src={logo} alt="holberton logo" />
+          <img src="./assets/holberton-logo.jpg" />
           <h1>School dashboard</h1>
         </div>
         <div className="App-body">
