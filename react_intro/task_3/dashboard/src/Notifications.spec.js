@@ -25,6 +25,6 @@ test('clicking close button logs "Close button has been clicked"', () => {
     render(<Notifications />);
     const button = screen.getByRole('button', { name: /Close/i });
     button.click();
-    expect(console.log).toHaveBeenCalledWith('Close button has been clicked');
+    expect(consoleSpy).toHaveBeenCalledWith('Close button has been clicked');
     consoleSpy.mockRestore();
 });
