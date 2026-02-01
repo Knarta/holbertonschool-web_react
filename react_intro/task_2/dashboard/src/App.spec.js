@@ -17,8 +17,8 @@ test('renders correct text content p elements app-body and app-footer', () => {
 
 test('renders img is element', () => {
     render(<App />);
-    const img = screen.getByRole('img');
-    expect(img).toBeInTheDocument();
+    const image = screen.getByAltText(/holberton logo/i);
+    expect(image).toBeInTheDocument();
 });
 
 test('renders 2 input elements', () => {
