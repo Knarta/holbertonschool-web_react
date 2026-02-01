@@ -11,8 +11,8 @@ test("Notifications exists", () => {
 
 test("Button element exists", () => {
     render(<Notifications />);
-    const button = screen.getByRole('button', { name: /Close/i });
-    expect(button).toBeInTheDocument();
+    const buttons = screen.getAllByRole('button', { name: /Close/i });
+    expect(buttons).toHaveLength(3);
 });
 
 test("renders 3 li elements as notifications", () => {
