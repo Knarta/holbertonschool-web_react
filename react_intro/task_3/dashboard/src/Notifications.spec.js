@@ -24,3 +24,4 @@ test("blob", () => {
   expect(logSpy).toHaveBeenCalledWith(
     expect.stringMatching(/Close button has been clicked/i),
   );
+});
