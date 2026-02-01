@@ -19,21 +19,6 @@
   border-bottom: 2px solid #E0454B;
 }
 
-.App-body form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-width: 400px;
-}
-
-.App-body button:not([aria-label="Close"]) {
-  padding: 0.5rem;
-  background: #E0454B;
-  color: white;
-  border: none;
-  margin-top: 1rem;
-}
-
 .App-footer {
   text-align: center;
   font-style: italic;
