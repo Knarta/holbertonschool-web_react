@@ -1,8 +1,7 @@
-import './App.css';
-import './Notifications.css';
-import Notifications from './Notifications.jsx';
-import logo from './assets/holberton-logo.jpg';
-import { getCurrentYear, getFooterCopy } from './utils.js';
+import holbertonLogo from "../assets/holberton-logo.jpg";
+import { getCurrentYear, getFooterCopy } from "../utils/utils.js";
+import "./App.css";
+import Notifications from "../Notifications/Notifications.jsx";
 
 function App() {
 
