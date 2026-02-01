@@ -2,10 +2,12 @@ import { render, screen } from '@testing-library/react';
 import Notifications from './Notifications';
 
 
+jest.mock('./utils.js', () => ({
+    getLatestNotification: () => '<strong>Urgent requirement</strong> - complete by EOD'
+}));
+
+
 test("Notifications exists", () => {
-    jest.mock('./utils.js', () => ({
-        getLatestNotification: () => '<strong>Urgent requirement</strong> - complete by EOD',
-    }));
     render(<Notifications />);
     const notifications = screen.getByText(/Here is the list of notifications/i);
     expect(notifications).toBeInTheDocument();
