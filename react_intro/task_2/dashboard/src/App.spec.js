@@ -3,7 +3,7 @@ import App from './App';
 
 test('renders School Dashboard h1', () => {
     render(<App />);
-    const h1 = screen.getByText('School Dashboard');
+    const h1 = screen.getByText(/school dashboard/i);
     expect(h1).toBeInTheDocument();
 });
 
