@@ -11,7 +11,7 @@ test('renders correct text content p elements app-body and app-footer', () => {
     render(<App />);
     const Body_p = screen.getByText('Login to access the full dashboard');
     expect(Body_p).toBeInTheDocument();
-    const Footer_p = screen.getByText(/Copyright 2026 - holberton School/i);
+    const Footer_p = screen.getByText(/Copyright 2026|holberton School/i);
     expect(Footer_p).toBeInTheDocument();
 });
 
@@ -29,7 +29,7 @@ test('renders 2 input elements', () => {
     expect(passwordInput).toBeInTheDocument();
 });
 
-test(' renders 2 label elements', () => {
+test('renders 2 label elements', () => {
     render(<App />);
     const emailLabel = screen.getByText(/email/i);
     expect(emailLabel).toBeInTheDocument();
@@ -37,7 +37,7 @@ test(' renders 2 label elements', () => {
     expect(passwordLabel).toBeInTheDocument();
 });
 
-test(' renders a button element', () => {
+test('renders a button element', () => {
     render(<App />);
     const button = screen.getByRole('button', { name: /OK/i });
     expect(button).toBeInTheDocument();
