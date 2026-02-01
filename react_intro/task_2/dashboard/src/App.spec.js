@@ -20,3 +20,25 @@ test('renders img is element', () => {
     const img = screen.getByRole('img');
     expect(img).toBeInTheDocument();
 });
+
+test('renders 2 input elements', () => {
+    render(<App />);
+    const emailInput = screen.getByLabelText(/email/i);
+    expect(emailInput).toBeInTheDocument();
+    const passwordInput = screen.getByLabelText(/password/i);
+    expect(passwordInput).toBeInTheDocument();
+});
+
+test(' renders 2 label elements', () => {
+    render(<App />);
+    const emailLabel = screen.getByLabelText(/email/i);
+    expect(emailLabel).toBeInTheDocument();
+    const passwordLabel = screen.getByLabelText(/password/i);
+    expect(passwordLabel).toBeInTheDocument();
+});
+
+test(' renders a button element', () => {
+    render(<App />);
+    const button = screen.getByRole('button', { name: /OK/i });
+    expect(button).toBeInTheDocument();
+});
