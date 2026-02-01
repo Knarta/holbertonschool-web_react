@@ -9,9 +9,9 @@ test('renders School Dashboard h1', () => {
 
 test('renders correct text content p elements app-body and app-footer', () => {
     render(<App />);
-    const Body_p = screen.getByText(/./, { selector: 'p' });
+    const Body_p = screen.getByText('Login to access the full dashboard');
     expect(Body_p).toBeInTheDocument();
-    const Footer_p = screen.getByText(/./, { selector: 'p' });
+    const Footer_p = screen.getByText('Copyright 2026 - Holberton School');
     expect(Footer_p).toBeInTheDocument();
 });
 
