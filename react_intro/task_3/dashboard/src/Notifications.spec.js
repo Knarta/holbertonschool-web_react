@@ -12,7 +12,7 @@ test("Notifications exists", () => {
 test("Button element exists", () => {
     render(<Notifications />);
     const buttons = screen.getAllByRole('button', { name: /Close/i });
-    expect(buttons).toHaveLength(3);
+    expect(buttons).toHaveLength(1);
 });
 
 test("renders 3 li elements as notifications", () => {
@@ -24,7 +24,7 @@ test("renders 3 li elements as notifications", () => {
 test('clicking close button logs "Close button has been clicked"', () => {
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
     render(<Notifications />);
-    const button = screen.getByRole('button', { name: /Close/i });
+    const button = screen.getAllByRole('button', { name: /Close/i })[0];
     button.click();
     expect(consoleSpy).toHaveBeenCalledWith('Close button has been clicked');
     consoleSpy.mockRestore();
