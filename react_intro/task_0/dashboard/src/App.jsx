@@ -5,7 +5,7 @@ function App() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div>
+    <div className="App">
       <div className="App-header">
         <img src={logo} alt="holberton logo" />
         <h1>School dashboard</h1>
