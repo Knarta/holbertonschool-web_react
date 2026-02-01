@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { expect, test, jest } from "@jest/globals";
 import Notifications from './Notifications';
 
+jest.mock('../utils');
 
 test("Notifications exists", () => {
     render(<Notifications />);
