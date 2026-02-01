@@ -9,8 +9,10 @@ test('renders School Dashboard h1', () => {
 
 test('renders correct text content p elements app-body and app-footer', () => {
     render(<App />);
-    const p = screen.getByText(/./, { selector: 'p' });
-    expect(p).toBeInTheDocument();
+    const Body_p = screen.getByText(/./, { selector: 'p' });
+    expect(Body_p).toBeInTheDocument();
+    const Footer_p = screen.getByText(/./, { selector: 'p' });
+    expect(Footer_p).toBeInTheDocument();
 });
 
 test('renders img is element', () => {
