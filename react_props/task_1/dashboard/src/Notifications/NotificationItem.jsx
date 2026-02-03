@@ -5,7 +5,7 @@ function NotificationItem ({ type , html , value }) {
 
     if (html) {
         return (
-            <li data-notification-type={type} style={style} dangerouslySetInnerHTML={{ __html: html }}></li>
+            <li data-notification-type={type} style={style} dangerouslySetInnerHTML={typeof html === 'object' ? html : { __html: html }}></li>
             );
         }
     else {
