@@ -1,6 +1,6 @@
 import closeButton from "../assets/close-button.png";
 import "./Notifications.css";
-import { getLatestNotification } from "../utils/utils.js";
+import NotificationItem from "./NotificationItem";
 
 function Notifications() {
   const markup = { __html: getLatestNotification() };
@@ -9,9 +9,9 @@ function Notifications() {
       <div className="notification-items">
         <p>Here is the list of notifications</p>
         <ul>
-          <li data-priority="default">New course available</li>
-          <li data-priority="urgent">New resume available</li>
-          <li data-priority="urgent" dangerouslySetInnerHTML={markup}></li>
+          {notifications.map((item) => (
+            <NotificationItem key={item.id} type={item.type} html={item.html} value={item.value} />
+          ))}
         </ul>
       </div>
       <button
@@ -25,7 +25,7 @@ function Notifications() {
           right: "20px",
         }}
         aria-label="Close"
-        onClick={() => console.log("Close button has been clicked")}
+        onClick={() => console.log("Close button has been clicked")}é
       >
         <img src={closeButton} alt="close-button" />
       </button>
