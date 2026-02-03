@@ -99,4 +99,4 @@ describe('Notifications component - displayDrawer is true and notifications is e
     render(<Notifications displayDrawer={true} notifications={[]} />);
     expect(screen.queryAllByRole('listitem')).toHaveLength(0);
   });
-});v
+});
