@@ -1,0 +1,17 @@
+.notification-items {
+    border: 2px dotted #e1003c;
+    padding-left: 10px;
+  }
+  
+  button img {
+    width: 8px;
+    height: 8px;
+  }
+  
+  [data-priority="default"] {
+    color: blue;
+  }
+  
+  [data-priority="urgent"] {
+    color: #e1003c;
+  }
