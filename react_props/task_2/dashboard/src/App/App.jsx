@@ -17,7 +17,7 @@ function App() {
   ];
   return (
     <>
-      <Notifications notification={notificationsList} />
+      <Notifications notifications={notificationsList} />
       <Header />
       <Login />
       <Footer />

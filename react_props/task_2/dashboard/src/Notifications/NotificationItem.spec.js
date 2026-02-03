@@ -8,7 +8,7 @@ describe('NotificationItem', () => {
     });
 
     test('li element has the color red when type is urgent', () => {
-        render(<NotificationItem type="urgent" />);
+        render(<NotificationItem type="urgent" value="New resume available" />);
         expect(screen.getByText('New resume available')).toHaveStyle({ color: 'red' });
     });
 });
