@@ -1,6 +1,6 @@
 function NotificationItem ({ type , html , value }) {
     const style = {
-        color: type === "urgent" ? "blue" : "red"
+        color: type === "urgent" ? "red" : "blue"
     }
 
     const text = type === "urgent" ? "New resume available" : "New course available";
