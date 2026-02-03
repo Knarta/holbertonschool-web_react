@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 describe('NotificationItem', () => {
     test('li element has the color blue when type is default', () => {
-        render(<NotificationItem type="default" />);
+        render(<NotificationItem type="default" value="New course available" />);
         expect(screen.getByText('New course available')).toHaveStyle({ color: 'blue' });
     });
 
