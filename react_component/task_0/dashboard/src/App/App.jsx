@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import { getLatestNotification } from '../utils/utils.js';
 import Notifications from '../Notifications/Notifications.jsx';
 import Header from '../Header/Header.jsx';
@@ -8,7 +9,7 @@ import CourseList from '../CourseList/CourseList.jsx';
 
 class App extends React.Component {
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn = false } = this.props;
     const notificationsList = [
       { id: 1, type: 'default', value: 'New course available' },
       { id: 2, type: 'urgent', value: 'New resume available' },
