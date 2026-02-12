@@ -5,6 +5,8 @@ import NotificationItem from './NotificationItem.jsx';
 
 class Notifications extends React.Component {
   static defaultProps = {
+    notifications: [],
+    displayDrawer: true,
     markAsRead: () => {},
   };
 
@@ -12,23 +14,29 @@ class Notifications extends React.Component {
     console.log(`Notification ${id} has been marked as read`);
   }
 
+  shouldComponentUpdate(nextProps) {
+    return (
+      this.props.notifications !== nextProps.notifications ||
+      this.props.displayDrawer !== nextProps.displayDrawer
+    );
+  }
+
   render() {
-    const { notifications = [], displayDrawer = true } = this.props;
     return (
       <div className="root-notifications">
         <div className="notifications-title">
           <p>Your notifications</p>
         </div>
-        {displayDrawer && (
+        {this.props.displayDrawer && (
           <>
             <div className="notification-items">
-              {notifications.length === 0 ? (
+              {this.props.notifications.length === 0 ? (
                 <p>No new notification for now</p>
               ) : (
                 <>
                   <p>Here is the list of notifications</p>
                   <ul>
-                    {notifications.map((notif) => (
+                    {this.props.notifications.map((notif) => (
                       <NotificationItem
                         key={notif.id}
                         id={notif.id}
