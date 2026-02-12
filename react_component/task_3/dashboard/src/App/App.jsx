@@ -6,23 +6,33 @@ import Header from '../Header/Header.jsx';
 import Login from '../Login/Login.jsx';
 import Footer from '../Footer/Footer.jsx';
 import CourseList from '../CourseList/CourseList.jsx';
+import BodySectionWithMargin from '../BodySection/BodySectionWithMarginBottom.jsx';
+import BodySection from '../BodySection/BodySection.jsx';
 
 class App extends React.Component {
   static defaultProps = {
     logOut: () => {},
   };
+
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
   }
+
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown);
   }
+
   handleKeyDown = (event) => {
     if (event.ctrlKey && event.key === 'h') {
       alert('Logging you out');
-      this.props.logOut();
+      this.logout();
     }
+  };
+
+  logout() {
+    this.props.logOut();
   }
+
   render() {
     const { isLoggedIn = false } = this.props;
     const notificationsList = [
@@ -37,15 +47,26 @@ class App extends React.Component {
       { id: 3, name: 'React', credit: 40 },
     ];
 
-
-  return (
-    <>
-      <Notifications notifications={notificationsList} />
-      <Header />
-      {isLoggedIn ? <CourseList courses={coursesList} /> : <Login />}
-      <Footer />
-    </>
-  );
+    return (
+      <>
+        <Notifications notifications={notificationsList} />
+        <Header />
+        {isLoggedIn ? (
+          <BodySectionWithMargin title="Course list">
+            <CourseList courses={coursesList} />
+          </BodySectionWithMargin>
+        ) : (
+          <BodySectionWithMargin title="Log in to continue">
+            <Login />
+          </BodySectionWithMargin>
+        )}
+        <Footer />
+        <BodySectionWithMargin />
+        <BodySection title="News from the School">
+          <p>Holberton School News goes here</p>
+        </BodySection>
+      </>
+    );
   }
 }
 
