@@ -4,7 +4,9 @@ import App from './App.jsx';
 
 test('should render title', () => {
   render(<App />);
-  expect(screen.getByRole('heading')).toHaveTextContent(/School dashboard/i);
+  expect(
+    screen.getByRole('heading', { name: /School dashboard/i }),
+  ).toHaveTextContent(/School dashboard/i);
 });
 
 test('should render two paragraphs', () => {
@@ -67,4 +69,14 @@ test('should call alert with Logging you out when Ctrl+h is pressed', () => {
   fireEvent.keyDown(document, { key: 'h', ctrlKey: true });
   expect(alert).toHaveBeenCalledWith('Logging you out');
   alert.mockRestore();
+});
+
+test('displays title "News from the School" and paragraph "Holberton School News goes here" by default', () => {
+  render(<App />);
+  expect(
+    screen.getByRole('heading', { name: 'News from the School' }),
+  ).toBeInTheDocument();
+  const paragraph = screen.getByText('Holberton School News goes here');
+  expect(paragraph).toBeInTheDocument();
+  expect(paragraph.tagName).toBe('P');
 });
