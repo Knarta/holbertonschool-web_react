@@ -1,4 +1,4 @@
-mport React from 'react';
+import React from 'react';
 
 class NotificationItem extends React.Component {
   handleClick = () => {
