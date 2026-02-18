@@ -4,7 +4,7 @@
 @import "@fontsource/roboto/700.css";
 
 @theme {
-    --font-sans: "Roboto", var(--font-sans);
+    --font-sans: "Roboto", ui-sans-serif, system-ui;
 }
 
 @layer base {
