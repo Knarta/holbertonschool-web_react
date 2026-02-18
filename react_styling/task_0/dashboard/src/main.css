@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/700.css";
+
+@theme {
+    --font-sans: "Roboto", var(--font-sans);
+}
+
+@layer base {
+    html {
+        font-family: var(--font-sans);
+    }
+}
