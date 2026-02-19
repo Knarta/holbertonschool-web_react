@@ -1,4 +1,3 @@
-import './App.css';
 import React from 'react';
 import { getLatestNotification } from '../utils/utils.js';
 import Notifications from '../Notifications/Notifications.jsx';

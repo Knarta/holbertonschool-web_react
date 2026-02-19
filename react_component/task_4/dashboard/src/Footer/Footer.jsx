@@ -1,9 +1,8 @@
 import { getCurrentYear, getFooterCopy } from "../utils/utils.js";
-import "./Footer.css";
 
 function Footer() {
   return (
-    <footer className="App-footer">
+    <footer className="flex justify-center border-t-2 border-main">
       <p>
         Copyright {getCurrentYear()} - {getFooterCopy(true)}
       </p>

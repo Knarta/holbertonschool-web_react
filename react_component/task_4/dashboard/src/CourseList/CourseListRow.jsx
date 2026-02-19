@@ -3,25 +3,26 @@ function CourseListRow({
     textFirstCell = '',
     textSecondCell = null,
   }) {
+    const cellClass = "border border-black p-2";
     if (isHeader) {
       if (textSecondCell === null) {
         return (
           <tr>
-            <th colSpan={2}>{textFirstCell}</th>
+            <th colSpan={2} className={`${cellClass} font-bold text-center`}>{textFirstCell}</th>
           </tr>
         );
       }
       return (
         <tr>
-          <th>{textFirstCell}</th>
-          <th>{textSecondCell}</th>
+          <th className={`${cellClass} font-bold text-center`}>{textFirstCell}</th>
+          <th className={`${cellClass} font-bold text-center`}>{textSecondCell}</th>
         </tr>
       );
     }
     return (
       <tr>
-        <td>{textFirstCell}</td>
-        <td>{textSecondCell}</td>
+        <td className={cellClass}>{textFirstCell}</td>
+        <td className={cellClass}>{textSecondCell}</td>
       </tr>
     );
   }
