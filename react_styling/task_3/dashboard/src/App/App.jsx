@@ -47,26 +47,24 @@ class App extends React.Component {
     ];
 
     return (
-      <div className="min-h-screen flex flex-col">
+      <>
         <Notifications notifications={notificationsList} />
         <Header />
-        <div className="flex-1">
-          {isLoggedIn ? (
-            <BodySectionWithMargin title="Course list">
-              <CourseList courses={coursesList} />
-            </BodySectionWithMargin>
-          ) : (
-            <BodySectionWithMargin title="Log in to continue">
-              <Login />
-            </BodySectionWithMargin>
-          )}
-          <BodySectionWithMargin />
-          <BodySection title="News from the School">
-            <p>Holberton School News goes here</p>
-          </BodySection>
-        </div>
+        {isLoggedIn ? (
+          <BodySectionWithMargin title="Course list">
+            <CourseList courses={coursesList} />
+          </BodySectionWithMargin>
+        ) : (
+          <BodySectionWithMargin title="Log in to continue">
+            <Login />
+          </BodySectionWithMargin>
+        )}
         <Footer />
-      </div>
+        <BodySectionWithMargin />
+        <BodySection title="News from the School">
+          <p>Holberton School News goes here</p>
+        </BodySection>
+      </>
     );
   }
 }
