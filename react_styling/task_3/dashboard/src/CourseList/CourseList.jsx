@@ -4,8 +4,8 @@ import CourseListRow from './CourseListRow.jsx'
 function CourseList({ courses = [] }) {
   return (
     <>
-      <div className='w-4/5 mx-auto my-8'>
-        <table id='CourseList' className='w-full border-collapse'>
+      <div className='w-full max-w-4xl mx-auto my-8 px-4 sm:px-0 overflow-x-auto'>
+        <table id='CourseList' className='w-full min-w-[280px] border-collapse'>
           <thead>
             { courses.length === 0 ? (
                 <CourseListRow isHeader={true} textFirstCell='No course available yet' />
