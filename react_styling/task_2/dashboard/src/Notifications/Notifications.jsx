@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import closeButton from '../assets/close-button.png'
 import NotificationItem from './NotificationItem.jsx'
+import './Notifications.css'
 
 class Notifications extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class Notifications extends Component {
 
   static defaultProps = {
     notifications: [],
-    displayDrawer: false
+    displayDrawer: true
   }
 
   markAsRead(id) {
@@ -25,8 +26,8 @@ class Notifications extends Component {
 
   render() {
     return (
-      <>
-        <div className='notification-title'>
+      <div className='root-notifications'>
+        <div className='notification-title text-right'>
           Your notifications
         </div>
         { this.props.displayDrawer ? (
@@ -34,7 +35,7 @@ class Notifications extends Component {
             { this.props.notifications.length === 0 ? (
               <>
                 <div className='notification-items border border-dashed border-[var(--main-color)] w-1/4 p-[6px]'>
-                  <p>No new notification for now</p>
+                  <p>no new notification for now</p>
                 </div>
               </>
             ) : (
@@ -77,7 +78,7 @@ class Notifications extends Component {
           <></>
         )
         }
-      </>
+      </div>
     )
   }
 }
