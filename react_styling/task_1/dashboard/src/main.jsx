@@ -6,8 +6,10 @@ import '@fontsource/roboto/700.css'
 import App from './App/App.jsx'
 import './main.css'
 
+const isLoggedIn = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('loggedIn') === '1';
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <App isLoggedIn={isLoggedIn} />
   </StrictMode>,
 );
