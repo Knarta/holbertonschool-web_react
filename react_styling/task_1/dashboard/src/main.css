@@ -2,6 +2,8 @@
 
 @theme {
     --font-sans: "Roboto", ui-sans-serif, system-ui;
+    --color-table-header: #deb5b5;
+    --color-table-rows: #CDCDCD;
 }
 
 @layer base {
