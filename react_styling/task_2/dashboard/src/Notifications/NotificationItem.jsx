@@ -1,44 +1,35 @@
-import React from 'react';
+import { PureComponent } from 'react'
 
-class NotificationItem extends React.PureComponent {
-  handleClick = () => {
-    const { id, markAsRead } = this.props;
-    console.log(`Notification ${id} has been marked as read`);
-    if (markAsRead) {
-      markAsRead(id);
-    }
-  };
+class NotificationItem extends PureComponent {
+  constructor(props) {
+    super(props);
+  }
+
+  static defaultProps = {
+    type: 'default',
+    value: '',
+    html: null
+  }
 
   render() {
-    const { type = null, html = null, value = null } = this.props;
-    const textColorClass =
-      type === 'urgent'
-        ? 'text-[var(--urgent-notification-item)]'
-        : 'text-[var(--default-notification-item)]';
-
-    if (html) {
-      return (
-        <li
-          onClick={this.handleClick}
-          data-notification-type={type}
-          className={textColorClass}
-          dangerouslySetInnerHTML={
-            typeof html === 'object' ? html : { __html: html }
-          }
-        />
-      );
-    }
+    const hasHTML = this.props.html && (typeof this.props.html === 'object' || typeof this.props.html === 'string');
 
     return (
       <li
-        onClick={this.handleClick}
-        data-notification-type={type}
-        className={textColorClass}
+        data-notification-type={this.props.type}
+        // style={{ color: this.props.type === 'default' ? 'blue' : 'red' }}
+        className={
+          this.props.type === 'default'
+            ? 'text-[var(--default-notification-item)]'
+            : 'text-[var(--urgent-notification-item)]'
+        }
+        onClick={this.props.markAsRead}
+        {...(hasHTML ? { dangerouslySetInnerHTML: typeof this.props.html === 'object' ? this.props.html : { __html: this.props.html } } : {})}
       >
-        {value}
+        {!hasHTML ? this.props.value : null}
       </li>
     );
   }
 }
 
-export default NotificationItem;
+export default NotificationItem
