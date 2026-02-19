@@ -56,7 +56,7 @@ class Notifications extends Component {
                   </ul>
                 </div>
                 <button
-                  className="w-2 h-2 border-0 bg-none absolute top-2.5 right-5 p-0"
+                  className="w-2 h-2 border-0 bg-transparent absolute top-2.5 right-5 p-0"
                   aria-label='Close'
                   onClick={() => console.log('Close button has been clicked')}
                 >
