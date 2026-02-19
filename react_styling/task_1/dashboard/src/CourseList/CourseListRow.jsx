@@ -3,8 +3,8 @@ function CourseListRow({
     textFirstCell = '',
     textSecondCell = null,
   }) {
-    const headerRowClasses = 'bg-table-header opacity-[66%]';
-    const bodyRowClasses = 'bg-table-rows opacity-[45%]';
+    const headerRowClasses = 'bg-table-header opacity-[0.66]';
+    const bodyRowClasses = 'bg-table-rows opacity-45';
     const cellClasses = 'border border-gray-400';
 
     if (isHeader) {
