@@ -1,22 +1,7 @@
-@import "tailwindcss";
-
-@import "@fontsource/roboto/400.css";
-@import "@fontsource/roboto/500.css";
-@import "@fontsource/roboto/700.css";
+@import 'tailwindcss';
 
 @theme {
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
   --color-table-header: #deb5b5;
   --color-table-rows: #CDCDCD;
-  --font-sans: "Roboto", ui-sans-serif, system-ui;
-}
-
-@layer base {
-  :root {
-    --color-table-header: #deb5b5;
-    --color-table-rows: #CDCDCD;
-  }
-
-  html {
-    font-family: var(--font-sans);
-  }
 }

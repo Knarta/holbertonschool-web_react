@@ -1,29 +1,31 @@
 function CourseListRow({ isHeader = false, textFirstCell = '', textSecondCell = null }) {
-  const headerStyle = { backgroundColor: 'var(--color-table-header)' };
-  const rowStyle = { backgroundColor: 'var(--color-table-rows)' };
-
   if (isHeader) {
-    if (textSecondCell === null) {
-      return (
-        <tr style={headerStyle}>
-          <th colSpan={2} className="border border-gray-400 px-2">{textFirstCell}</th>
-        </tr>
-      );
-    }
     return (
-      <tr style={headerStyle}>
-        <th className="border border-gray-400 px-2">{textFirstCell}</th>
-        <th className="border border-gray-400 px-2">{textSecondCell}</th>
-      </tr>
-    );
+      <>
+        <tr className='bg-table-header opacity-[66%]'>
+          {
+            textSecondCell === null ? (
+              <th className='border border-gray-400' colSpan={2}>{textFirstCell}</th>
+            ) : (
+              <>
+                <th className='border border-gray-400'>{textFirstCell}</th>
+                <th className='border border-gray-400'>{textSecondCell}</th>
+              </>
+            )
+          }
+        </tr>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <tr className='bg-table-rows opacity-[45%]'>
+          <td className='border border-gray-400 pl-[8px]'>{textFirstCell}</td>
+          <td className='border border-gray-400 pl-[8px]'>{textSecondCell}</td>
+        </tr>
+      </>
+    )
   }
-
-  return (
-    <tr style={rowStyle}>
-      <td className="border border-gray-400 px-2">{textFirstCell}</td>
-      <td className="border border-gray-400 px-2">{textSecondCell}</td>
-    </tr>
-  );
 }
 
-export default CourseListRow;
+export default CourseListRow
