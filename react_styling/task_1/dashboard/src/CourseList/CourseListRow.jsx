@@ -3,29 +3,25 @@ function CourseListRow({
     textFirstCell = '',
     textSecondCell = null,
   }) {
-    const headerRowClasses = 'bg-table-header opacity-[0.66]';
-    const bodyRowClasses = 'bg-table-rows opacity-45';
-    const cellClasses = 'border border-gray-400';
-
     if (isHeader) {
       if (textSecondCell === null) {
         return (
-          <tr className={headerRowClasses}>
-            <th colSpan={2} className={cellClasses}>{textFirstCell}</th>
+          <tr className="bg-[var(--color-table-header)/66%]">
+            <th colSpan={2} className="border border-gray-400 px-2">{textFirstCell}</th>
           </tr>
         );
       }
       return (
-        <tr className={headerRowClasses}>
-          <th className={cellClasses}>{textFirstCell}</th>
-          <th className={cellClasses}>{textSecondCell}</th>
+        <tr className="bg-[var(--color-table-header)/66%]">
+          <th className="border border-gray-400 px-2">{textFirstCell}</th>
+          <th className="border border-gray-400 px-2">{textSecondCell}</th>
         </tr>
       );
     }
     return (
-      <tr className={bodyRowClasses}>
-        <td className={`${cellClasses} pl-2`}>{textFirstCell}</td>
-        <td className={`${cellClasses} pl-2`}>{textSecondCell}</td>
+      <tr className="bg-[var(--color-table-rows)/45%]">
+        <td className="border border-gray-400 px-2">{textFirstCell}</td>
+        <td className="border border-gray-400 px-2">{textSecondCell}</td>
       </tr>
     );
   }
