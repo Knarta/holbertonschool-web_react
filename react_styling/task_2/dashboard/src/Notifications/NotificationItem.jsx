@@ -8,22 +8,33 @@ class NotificationItem extends PureComponent {
   static defaultProps = {
     type: 'default',
     value: '',
-    html: null
+    html: null,
+    markAsRead: () => {},
+  }
+
+  handleClick = () => {
+    const { id, markAsRead } = this.props;
+    console.log(`Notification ${id} has been marked as read`);
+    markAsRead(id);
   }
 
   render() {
     const hasHTML = this.props.html && (typeof this.props.html === 'object' || typeof this.props.html === 'string');
 
+    const colorStyle = {
+      color: this.props.type === 'urgent' ? 'red' : 'blue',
+    };
+
     return (
       <li
         data-notification-type={this.props.type}
-        // style={{ color: this.props.type === 'default' ? 'blue' : 'red' }}
+        style={colorStyle}
         className={
           this.props.type === 'default'
             ? 'text-[var(--default-notification-item)]'
             : 'text-[var(--urgent-notification-item)]'
         }
-        onClick={this.props.markAsRead}
+        onClick={this.handleClick}
         {...(hasHTML ? { dangerouslySetInnerHTML: typeof this.props.html === 'object' ? this.props.html : { __html: this.props.html } } : {})}
       >
         {!hasHTML ? this.props.value : null}
