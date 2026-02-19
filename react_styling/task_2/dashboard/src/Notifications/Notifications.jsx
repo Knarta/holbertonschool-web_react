@@ -27,20 +27,20 @@ class Notifications extends Component {
   render() {
     return (
       <div className='root-notifications'>
-        <div className='notification-title text-right'>
+        <div className='notification-title text-right w-full min-w-[200px] max-w-[600px]'>
           Your notifications
         </div>
         { this.props.displayDrawer ? (
           <>
             { this.props.notifications.length === 0 ? (
               <>
-                <div className='notification-items border border-dashed border-[var(--main-color)] w-1/4 p-[6px]'>
+                <div className='notification-items border border-dashed border-[var(--main-color)] w-full min-w-[200px] max-w-[600px] p-[6px]'>
                   <p>no new notification for now</p>
                 </div>
               </>
             ) : (
               <>
-                <div className='notification-items border border-dashed border-[var(--main-color)] w-1/4 p-[6px]'>
+                <div className='notification-items border border-dashed border-[var(--main-color)] w-full min-w-[200px] max-w-[600px] p-[6px]'>
                   <p>Here is the list of notifications</p>
                   <ul>
                     {
