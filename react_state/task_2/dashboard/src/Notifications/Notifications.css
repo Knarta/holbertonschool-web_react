@@ -1,0 +1,15 @@
+.root-notifications {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: min(600px, 25vw);
+  min-width: 200px;
+}
+
+.close-button img {
+  width: 8px;
+  height: 8px;
+}

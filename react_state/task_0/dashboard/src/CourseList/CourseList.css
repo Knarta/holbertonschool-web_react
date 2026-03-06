@@ -1,0 +1,36 @@
+.courses-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#coursesTable {
+    border: solid 1px black;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#courseTable th,
+#courseTable tr {
+    font-weight: bold;
+    text-align: center;
+}
+
+#coursesTable th,
+#coursesTable td {
+    border: solid 1px black;
+}
+
+#coursesTable th:first-child,
+#coursesTable td:first-child {
+    width: 60%;
+}
+
+#noCourse {
+    width: 100%;
+    border: 1px solid black;
+    text-align: center;
+    font-weight: BOLD;
+}
