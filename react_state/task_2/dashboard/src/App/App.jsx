@@ -8,8 +8,20 @@ import Footer from '../Footer/Footer.jsx';
 import CourseList from '../CourseList/CourseList.jsx';
 import BodySectionWithMargin from '../BodySection/BodySectionWithMarginBottom.jsx';
 import BodySection from '../BodySection/BodySection.jsx';
+import newContext from '../Context/context.js';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {
+        email: '',
+        password: '',
+        isLoggedIn: false,
+      },
+    };
+  }
+
   static defaultProps = {
     logOut: () => {},
   };
@@ -29,12 +41,28 @@ class App extends React.Component {
     }
   };
 
-  logout() {
+  logout = () => {
+    this.setState({
+      user: { ...this.state.user, isLoggedIn: false },
+    });
     this.props.logOut();
-  }
+  };
+
+  logIn = (email, password) => {
+    this.setState({
+      user: {
+        email,
+        password,
+        isLoggedIn: true,
+      },
+    });
+  };
 
   render() {
-    const { isLoggedIn = false } = this.props;
+    const isLoggedIn =
+      this.props.isLoggedIn !== undefined
+        ? this.props.isLoggedIn
+        : this.state.user.isLoggedIn;
     const notificationsList = [
       { id: 1, type: 'default', value: 'New course available' },
       { id: 2, type: 'urgent', value: 'New resume available' },
@@ -47,8 +75,13 @@ class App extends React.Component {
       { id: 3, name: 'React', credit: 40 },
     ];
 
+    const contextValue = {
+      user: this.state.user,
+      logOut: this.logout,
+    };
+
     return (
-      <>
+      <newContext.Provider value={contextValue}>
         <Notifications notifications={notificationsList} />
         <Header />
         {isLoggedIn ? (
@@ -65,7 +98,7 @@ class App extends React.Component {
         <BodySection title="News from the School">
           <p>Holberton School News goes here</p>
         </BodySection>
-      </>
+      </newContext.Provider>
     );
   }
 }
