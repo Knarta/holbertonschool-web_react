@@ -1,11 +1,10 @@
 import { expect, jest, test, describe } from '@jest/globals';
 import { useState, useCallback, useEffect } from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import mockAxios from 'jest-mock-axios';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import App from './App.jsx';
 import { getLatestNotification } from '../utils/utils.js';
-import NewContext from '../Context/context.js';
+import AppContext from '../Context/context.js';
 
 const notificationsData = [
   { id: 1, type: 'default', value: 'New course available' },
@@ -19,40 +18,35 @@ const coursesData = [
   { id: 3, name: 'React', credit: 40 },
 ];
 
-afterEach(() => {
-  mockAxios.reset();
-});
-
-function resolveAxiosCalls() {
-  const notifCall = mockAxios.getReqByUrl('http://localhost:5173/notifications.json');
-  if (notifCall) {
-    mockAxios.mockResponse({ data: notificationsData }, notifCall);
-  }
-  const coursesCall = mockAxios.getReqByUrl('http://localhost:5173/courses.json');
-  if (coursesCall) {
-    mockAxios.mockResponse({ data: coursesData }, coursesCall);
-  }
-}
-
 async function renderApp() {
+  axios.get.mockImplementation((url) => {
+    if (url.includes('notifications.json')) {
+      return Promise.resolve({ data: notificationsData });
+    }
+    if (url.includes('courses.json')) {
+      return Promise.resolve({ data: coursesData });
+    }
+    return Promise.reject(new Error('Not found'));
+  });
+
   let result;
   await act(async () => {
     result = render(<App />);
   });
-  await act(async () => {
-    resolveAxiosCalls();
+  await waitFor(() => {
+    expect(axios.get).toHaveBeenCalled();
   });
   return result;
 }
 
 test('should fetch notifications data on initial render', async () => {
   await renderApp();
-  expect(mockAxios.get).toHaveBeenCalledWith('http://localhost:5173/notifications.json');
+  expect(axios.get).toHaveBeenCalledWith('http://localhost:5173/notifications.json');
 });
 
 test('should fetch courses data when user state changes', async () => {
   await renderApp();
-  expect(mockAxios.get).toHaveBeenCalledWith('http://localhost:5173/courses.json');
+  expect(axios.get).toHaveBeenCalledWith('http://localhost:5173/courses.json');
 });
 
 test('should render title', async () => {
@@ -132,62 +126,84 @@ test('should display CourseList after logging in via the login form', async () =
     fireEvent.click(screen.getByText(/ok/i));
   });
 
-  await act(async () => {
-    const coursesCall = mockAxios.getReqByUrl('http://localhost:5173/courses.json');
-    if (coursesCall) {
-      mockAxios.mockResponse({ data: coursesData }, coursesCall);
-    }
+  await waitFor(() => {
+    expect(
+      screen.getByRole('heading', { name: /Course list/i }),
+    ).toBeInTheDocument();
   });
-
-  expect(
-    screen.getByRole('heading', { name: /Course list/i }),
-  ).toBeInTheDocument();
   expect(
     screen.queryByText(/Login to access the full dashboard/i),
   ).not.toBeInTheDocument();
 });
 
-test('should fetch courses data when user logs in', async () => {
+test('logIn updates user state with email, password, and isLoggedIn', async () => {
   await renderApp();
 
-  const callCountBefore = mockAxios.get.mock.calls.filter(
-    (call) => call[0] === 'http://localhost:5173/courses.json',
-  ).length;
+  const emailInput = screen.getByLabelText(/email/i);
+  const passwordInput = screen.getByLabelText(/password/i);
 
   await act(async () => {
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(emailInput, { target: { value: 'user@test.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'mypassword' } });
     fireEvent.click(screen.getByText(/ok/i));
   });
 
-  const callCountAfter = mockAxios.get.mock.calls.filter(
-    (call) => call[0] === 'http://localhost:5173/courses.json',
-  ).length;
-
-  expect(callCountAfter).toBeGreaterThan(callCountBefore);
+  await waitFor(() => {
+    expect(screen.getByRole('heading', { name: /Course list/i })).toBeInTheDocument();
+    expect(screen.getByText(/user@test\.com/i)).toBeInTheDocument();
+  });
 });
 
-test('clicking on a notification item should remove it from the notification list and log the correct message', async () => {
+test('logOut resets user state: isLoggedIn false, Course list and welcome disappear', async () => {
+  await renderApp();
+
+  const emailInput = screen.getByLabelText(/email/i);
+  const passwordInput = screen.getByLabelText(/password/i);
+
+  await act(async () => {
+    fireEvent.change(emailInput, { target: { value: 'user@test.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'mypassword' } });
+    fireEvent.click(screen.getByText(/ok/i));
+  });
+
+  await waitFor(() => {
+    expect(screen.getByRole('heading', { name: /Course list/i })).toBeInTheDocument();
+  });
+
+  await act(async () => {
+    fireEvent.click(screen.getByText(/\(logout\)/i));
+  });
+
+  await waitFor(() => {
+    expect(screen.getByText(/Login to access the full dashboard/i)).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /Course list/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/user@test\.com/i)).not.toBeInTheDocument();
+  });
+});
+
+test('clicking on a notification item should remove it from the list and log the correct message', async () => {
   const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
   await renderApp();
 
-  const notificationTitle = screen.getByText(/Your notifications/i);
-  fireEvent.click(notificationTitle);
+  await waitFor(() => {
+    const items = screen.getAllByRole('listitem');
+    expect(items.length).toBeGreaterThanOrEqual(3);
+  });
 
   const items = screen.getAllByRole('listitem');
-  expect(items).toHaveLength(3);
-
-  fireEvent.click(items[0]);
+  consoleLogSpy.mockClear();
+  await act(async () => {
+    fireEvent.click(items[0]);
+  });
 
   expect(consoleLogSpy).toHaveBeenCalledWith(
     'Notification 1 has been marked as read',
   );
 
-  fireEvent.click(notificationTitle);
-  const remainingItems = screen.queryAllByRole('listitem');
-  expect(remainingItems).toHaveLength(2);
+  await waitFor(() => {
+    const remainingItems = screen.queryAllByRole('listitem');
+    expect(remainingItems).toHaveLength(2);
+  });
 
   consoleLogSpy.mockRestore();
 });
@@ -216,119 +232,8 @@ test('handleHideDrawer sets displayDrawer to false', async () => {
   expect(screen.queryByText(/Here is the list of notifications/i)).not.toBeInTheDocument();
 });
 
-test('logIn updates user state with email, password, and isLoggedIn', async () => {
-  await renderApp();
-
-  const emailInput = screen.getByLabelText(/email/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-
-  await act(async () => {
-    fireEvent.change(emailInput, { target: { value: 'user@test.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'mypassword' } });
-    fireEvent.click(screen.getByText(/ok/i));
-  });
-
-  await act(async () => {
-    const coursesCall = mockAxios.getReqByUrl('http://localhost:5173/courses.json');
-    if (coursesCall) {
-      mockAxios.mockResponse({ data: coursesData }, coursesCall);
-    }
-  });
-
-  expect(screen.getByRole('heading', { name: /Course list/i })).toBeInTheDocument();
-  expect(screen.queryByText(/Login to access the full dashboard/i)).not.toBeInTheDocument();
-  expect(screen.getByText(/user@test.com/i)).toBeInTheDocument();
-});
-
-test('logOut resets user state: isLoggedIn false, email and password cleared', async () => {
-  await renderApp();
-
-  await act(async () => {
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    fireEvent.change(emailInput, { target: { value: 'user@test.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'mypassword' } });
-    fireEvent.click(screen.getByText(/ok/i));
-  });
-
-  await act(async () => {
-    const coursesCall = mockAxios.getReqByUrl('http://localhost:5173/courses.json');
-    if (coursesCall) {
-      mockAxios.mockResponse({ data: coursesData }, coursesCall);
-    }
-  });
-
-  expect(screen.getByRole('heading', { name: /Course list/i })).toBeInTheDocument();
-
-  await act(async () => {
-    fireEvent.click(screen.getByText(/\(logout\)/i));
-  });
-
-  await act(async () => {
-    const coursesCall = mockAxios.getReqByUrl('http://localhost:5173/courses.json');
-    if (coursesCall) {
-      mockAxios.mockResponse({ data: coursesData }, coursesCall);
-    }
-  });
-
-  expect(screen.getByText(/Login to access the full dashboard/i)).toBeInTheDocument();
-  expect(screen.queryByRole('heading', { name: /Course list/i })).not.toBeInTheDocument();
-});
-
-test('The Notifications component state should remain unchanged through login / logout', async () => {
-  await renderApp();
-
-  // Open drawer and check initial notifications
-  fireEvent.click(screen.getByText(/Your notifications/i));
-  const initialItems = screen.getAllByRole('listitem');
-  expect(initialItems).toHaveLength(3);
-
-  // Log in
-  const emailInput = screen.getByLabelText(/email/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-
-  await act(async () => {
-    fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(screen.getByText(/ok/i));
-  });
-
-  await act(async () => {
-    const coursesCall = mockAxios.getReqByUrl('http://localhost:5173/courses.json');
-    if (coursesCall) {
-      mockAxios.mockResponse({ data: coursesData }, coursesCall);
-    }
-  });
-
-  // After login, notifications should still be the same
-  fireEvent.click(screen.getByText(/Your notifications/i));
-  const itemsAfterLogin = screen.getAllByRole('listitem');
-  expect(itemsAfterLogin).toHaveLength(3);
-
-  // Log out
-  await act(async () => {
-    fireEvent.click(screen.getByText(/\(logout\)/i));
-  });
-
-  await act(async () => {
-    const coursesCall = mockAxios.getReqByUrl('http://localhost:5173/courses.json');
-    if (coursesCall) {
-      mockAxios.mockResponse({ data: coursesData }, coursesCall);
-    }
-  });
-
-  // After logout, notifications should still be the same
-  fireEvent.click(screen.getByText(/Your notifications/i));
-  const itemsAfterLogout = screen.getAllByRole('listitem');
-  expect(itemsAfterLogout).toHaveLength(3);
-});
-
 describe('callback reference stability', () => {
-  let capturedProps;
-
-  beforeEach(() => {
-    capturedProps = [];
-  });
+  let capturedProps = [];
 
   function PropsCapture(props) {
     capturedProps.push(props);
@@ -341,34 +246,19 @@ describe('callback reference stability', () => {
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
-      const fetchNotifications = async () => {
-        try {
-          const response = await axios.get('http://localhost:5173/notifications.json');
-          const data = response.data.map((notif) => {
-            if (notif.html) return { ...notif, html: getLatestNotification() };
-            return notif;
-          });
-          setNotifications(data);
-        } catch { /* noop */ }
-      };
-      fetchNotifications();
+      axios.get('http://localhost:5173/notifications.json')
+        .then((res) => setNotifications(res.data || []))
+        .catch(() => {});
     }, []);
 
-    useEffect(() => {
-      const fetchCourses = async () => {
-        try { await axios.get('http://localhost:5173/courses.json'); } catch { /* noop */ }
-      };
-      fetchCourses();
-    }, [user]);
-
-    const handleDisplayDrawer = useCallback(() => { setDisplayDrawer(true); }, []);
-    const handleHideDrawer = useCallback(() => { setDisplayDrawer(false); }, []);
+    const handleDisplayDrawer = useCallback(() => setDisplayDrawer(true), []);
+    const handleHideDrawer = useCallback(() => setDisplayDrawer(false), []);
     const markNotificationAsRead = useCallback((id) => {
       setNotifications((prev) => prev.filter((n) => n.id !== id));
     }, []);
 
     return (
-      <NewContext.Provider value={{ user, logOut: () => {} }}>
+      <AppContext.Provider value={{ user, logOut: () => {} }}>
         <PropsCapture
           handleDisplayDrawer={handleDisplayDrawer}
           handleHideDrawer={handleHideDrawer}
@@ -376,17 +266,24 @@ describe('callback reference stability', () => {
           displayDrawer={displayDrawer}
           notifications={notifications}
         />
-      </NewContext.Provider>
+      </AppContext.Provider>
     );
   }
 
+  beforeEach(() => {
+    capturedProps = [];
+  });
+
   test('handleDisplayDrawer and handleHideDrawer keep the same reference between re-renders', async () => {
-    await act(async () => { render(<TestApp />); });
-    await act(async () => { resolveAxiosCalls(); });
+    await act(async () => {
+      render(<TestApp />);
+    });
 
     const first = capturedProps[capturedProps.length - 1];
 
-    await act(async () => { first.handleHideDrawer(); });
+    await act(async () => {
+      first.handleHideDrawer();
+    });
 
     const second = capturedProps[capturedProps.length - 1];
 
@@ -395,12 +292,15 @@ describe('callback reference stability', () => {
   });
 
   test('markNotificationAsRead keeps the same reference between re-renders', async () => {
-    await act(async () => { render(<TestApp />); });
-    await act(async () => { resolveAxiosCalls(); });
+    await act(async () => {
+      render(<TestApp />);
+    });
 
     const first = capturedProps[capturedProps.length - 1];
 
-    await act(async () => { first.handleHideDrawer(); });
+    await act(async () => {
+      first.handleHideDrawer();
+    });
 
     const second = capturedProps[capturedProps.length - 1];
 

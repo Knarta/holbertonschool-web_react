@@ -13,4 +13,5 @@ const AppContext = createContext({
   logOut: defaultLogOut,
 });
 
+export { AppContext as newContext, defaultUser };
 export default AppContext;

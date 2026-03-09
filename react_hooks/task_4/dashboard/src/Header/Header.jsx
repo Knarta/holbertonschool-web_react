@@ -19,7 +19,7 @@ function Header() {
       {user.isLoggedIn && (
         <section id="logoutSection" className="pl-1">
           Welcome <span className="font-bold">{user.email}</span>{' '}
-          <a className="italic" href="#" onClick={logOut}>
+          <a className="italic" href="#" onClick={(e) => { e.preventDefault(); logOut(); }}>
             (logout)
           </a>
         </section>
