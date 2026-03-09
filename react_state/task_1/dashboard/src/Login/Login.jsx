@@ -1,19 +1,24 @@
 import React from 'react';
 
 class Login extends React.Component {
+  static defaultProps = {
+    email: '',
+    password: '',
+    logIn: () => {},
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false,
-      email: '',
-      password: '',
+      email: this.props.email,
+      password: this.props.password,
       enableSubmit: false,
     };
   }
 
   handleLoginSubmit = (e) => {
     e.preventDefault();
-    this.setState({ isLoggedIn: true });
+    this.props.logIn(this.state.email, this.state.password);
   };
 
   handleChangeEmail = (e) => {
