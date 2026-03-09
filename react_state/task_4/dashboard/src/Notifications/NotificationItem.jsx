@@ -14,8 +14,9 @@ class NotificationItem extends PureComponent {
 
   handleClick = () => {
     const { id, markAsRead } = this.props;
-    console.log(`Notification ${id} has been marked as read`);
-    markAsRead(id);
+    if (markAsRead && id !== undefined) {
+      markAsRead(id);
+    }
   }
 
   render() {

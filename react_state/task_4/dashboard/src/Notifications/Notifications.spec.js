@@ -1,6 +1,6 @@
 import { render, fireEvent, screen, cleanup } from '@testing-library/react';
 import Notifications from './Notifications.jsx';
-import { getLatestNotification } from '../utils/utils';
+import { getLatestNotification } from '../utils/utils.js';
 
 const notificationsList = [
   { id: 1, type: 'default', value: 'New course available' },
@@ -20,21 +20,33 @@ afterEach(() => {
 describe('Notifications component - displayDrawer is false', () => {
   test('should display "Your notifications" text', () => {
     render(
-      <Notifications displayDrawer={false} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={false}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     expect(screen.getByText(/Your notifications/i)).toBeInTheDocument();
   });
 
   test('should not display close button', () => {
     render(
-      <Notifications displayDrawer={false} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={false}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     expect(screen.queryByLabelText(/close/i)).not.toBeInTheDocument();
   });
 
   test('should not display "Here is the list of notifications" text', () => {
     render(
-      <Notifications displayDrawer={false} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={false}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     expect(
       screen.queryByText(/Here is the list of notifications/i),
@@ -43,7 +55,11 @@ describe('Notifications component - displayDrawer is false', () => {
 
   test('should not display notification items', () => {
     render(
-      <Notifications displayDrawer={false} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={false}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     expect(screen.queryAllByRole('listitem')).toHaveLength(0);
   });
@@ -52,21 +68,33 @@ describe('Notifications component - displayDrawer is false', () => {
 describe('Notifications component - displayDrawer is true', () => {
   test('should display "Your notifications" text', () => {
     render(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     expect(screen.getByText(/Your notifications/i)).toBeInTheDocument();
   });
 
   test('should display close button', () => {
     render(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     expect(screen.getByLabelText(/close/i)).toBeInTheDocument();
   });
 
   test('should display "Here is the list of notifications" text', () => {
     render(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     expect(
       screen.getByText(/Here is the list of notifications/i),
@@ -75,7 +103,11 @@ describe('Notifications component - displayDrawer is true', () => {
 
   test('should render 3 notification items with appropriate text', () => {
     render(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     const items = screen.getAllByRole('listitem');
 
@@ -101,7 +133,11 @@ describe('Notifications component - displayDrawer is true', () => {
   test('should log message when close button is clicked', () => {
     const logSpy = jest.spyOn(console, 'log');
     render(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={() => {}}
+      />,
     );
     fireEvent.click(screen.getByLabelText(/close/i));
     expect(logSpy).toHaveBeenCalledWith(
@@ -110,67 +146,102 @@ describe('Notifications component - displayDrawer is true', () => {
     logSpy.mockRestore();
   });
 
-  test('should log correct message when notification item is clicked', () => {
-    const consoleLogSpy = jest
-      .spyOn(console, 'log')
-      .mockImplementation(() => {});
+  test('should call markNotificationAsRead when notification item is clicked', () => {
+    const markNotificationAsReadMock = jest.fn();
     render(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={markNotificationAsReadMock}
+      />,
     );
 
     const items = screen.getAllByRole('listitem');
     fireEvent.click(items[0]);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(
-      'Notification 1 has been marked as read',
-    );
-
-    consoleLogSpy.mockRestore();
+    expect(markNotificationAsReadMock).toHaveBeenCalledWith(1);
   });
 });
 
 describe('Notifications component - displayDrawer is true and notifications is empty', () => {
   test('should display "Your notifications" text', () => {
-    render(<Notifications displayDrawer={true} notifications={[]} />);
+    render(
+      <Notifications
+        displayDrawer={true}
+        notifications={[]}
+        markNotificationAsRead={() => {}}
+      />,
+    );
     expect(screen.getByText(/Your notifications/i)).toBeInTheDocument();
   });
 
-  test('should display "No new notification for now" text', () => {
-    render(<Notifications displayDrawer={true} notifications={[]} />);
+  test('should display "no new notification for now" text', () => {
+    render(
+      <Notifications
+        displayDrawer={true}
+        notifications={[]}
+        markNotificationAsRead={() => {}}
+      />,
+    );
     expect(
-      screen.getByText(/No new notification for now/i),
+      screen.getByText(/no new notification for now/i),
     ).toBeInTheDocument();
   });
 
   test('should not display "Here is the list of notifications" text', () => {
-    render(<Notifications displayDrawer={true} notifications={[]} />);
+    render(
+      <Notifications
+        displayDrawer={true}
+        notifications={[]}
+        markNotificationAsRead={() => {}}
+      />,
+    );
     expect(
       screen.queryByText(/Here is the list of notifications/i),
     ).not.toBeInTheDocument();
   });
 
   test('should not display notification items', () => {
-    render(<Notifications displayDrawer={true} notifications={[]} />);
+    render(
+      <Notifications
+        displayDrawer={true}
+        notifications={[]}
+        markNotificationAsRead={() => {}}
+      />,
+    );
     expect(screen.queryAllByRole('listitem')).toHaveLength(0);
   });
 
-  test("component doesn't re-render if the length of the notifications prop remains the same", () => {
+  test('component does not re-render when props are referentially equal (PureComponent)', () => {
+    const markNotificationAsRead = () => {};
     const { rerender } = render(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={markNotificationAsRead}
+      />,
     );
     const renderSpy = jest.spyOn(Notifications.prototype, 'render');
     rerender(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={markNotificationAsRead}
+      />,
     );
     expect(renderSpy).not.toHaveBeenCalled();
     renderSpy.mockRestore();
   });
 
-  test('component re-renders whenever the length of the notifications prop changes', () => {
+  test('component re-renders when notifications prop changes (PureComponent)', () => {
+    const markNotificationAsRead = () => {};
     const { rerender } = render(
-      <Notifications displayDrawer={true} notifications={notificationsList} />,
+      <Notifications
+        displayDrawer={true}
+        notifications={notificationsList}
+        markNotificationAsRead={markNotificationAsRead}
+      />,
     );
-    const renderSpy = jest.spyOn(Notifications.prototype, 'render');
     const newNotificationsList = [
       { id: 1, type: 'default', value: 'New course available' },
     ];
@@ -178,9 +249,10 @@ describe('Notifications component - displayDrawer is true and notifications is e
       <Notifications
         displayDrawer={true}
         notifications={newNotificationsList}
+        markNotificationAsRead={markNotificationAsRead}
       />,
     );
-    expect(renderSpy).toHaveBeenCalled();
-    renderSpy.mockRestore();
+    const items = screen.getAllByRole('listitem');
+    expect(items).toHaveLength(1);
   });
 });
