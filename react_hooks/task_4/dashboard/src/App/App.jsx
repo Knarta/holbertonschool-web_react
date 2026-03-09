@@ -35,8 +35,8 @@ function App() {
           return notif;
         });
         setNotifications(data);
-      } catch (error) {
-        console.error('Error fetching notifications:', error);
+      } catch {
+        setNotifications([]);
       }
     };
     fetchNotifications();
@@ -48,8 +48,8 @@ function App() {
         const response = await axios.get('http://localhost:5173/courses.json');
         const coursesData = response.data.courses || response.data;
         setCourses(coursesData);
-      } catch (error) {
-        console.error('Error fetching courses:', error);
+      } catch {
+        setCourses([]);
       }
     };
     fetchCourses();

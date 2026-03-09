@@ -11,7 +11,7 @@ describe('test of bodysection', () => {
   });
 
   test('BodySection component renders any number of children passed to it', () => {
-    const children = [<p>Test 1</p>, <p>Test 2</p>, <p>Test 3</p>];
+    const children = [<p key="1">Test 1</p>, <p key="2">Test 2</p>, <p key="3">Test 3</p>];
     render(<BodySection title="Test Section">{children}</BodySection>);
     expect(React.Children.count(children)).toBe(3);
     expect(screen.getAllByText(/Test \d/).length).toBe(3);
