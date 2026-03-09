@@ -124,23 +124,30 @@ test('should show logoutSection and hide it after ctrl+h logout', () => {
   alertMock.mockRestore();
 });
 
-test('clicking on a notification item should remove it from the notification list and log the correct message', () => {
+test('clicking on a notification item should remove it from the notification list and log the correct message', async () => {
   const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
   render(<App />);
 
   const notificationTitle = screen.getByText(/Your notifications/i);
-  fireEvent.click(notificationTitle);
+  await act(async () => {
+    fireEvent.click(notificationTitle);
+  });
 
   const items = screen.getAllByRole('listitem');
   expect(items).toHaveLength(3);
 
-  fireEvent.click(items[0]);
+  consoleLogSpy.mockClear();
+  await act(async () => {
+    fireEvent.click(items[0]);
+  });
 
   expect(consoleLogSpy).toHaveBeenCalledWith(
     'Notification 1 has been marked as read',
   );
 
-  fireEvent.click(notificationTitle);
+  await act(async () => {
+    fireEvent.click(notificationTitle);
+  });
   const remainingItems = screen.queryAllByRole('listitem');
   expect(remainingItems).toHaveLength(2);
 

@@ -18,7 +18,7 @@ class Notifications extends PureComponent {
       markAsRead,
       handleDisplayDrawer,
     } = this.props;
-    const markAsReadFn = markNotificationAsRead ?? markAsRead ?? (() => {});
+    const markAsReadFn = markAsRead || markNotificationAsRead;
 
     return (
       <div className='root-notifications fixed top-0 right-0 flex flex-col items-end w-[min(600px,25vw)] min-w-[200px] max-[912px]:inset-0 max-[912px]:w-full max-[912px]:min-w-0 max-[912px]:h-full max-[912px]:z-50'>
