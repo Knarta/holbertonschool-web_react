@@ -140,12 +140,9 @@ test('handleHideDrawer closes the notifications drawer when close button is clic
   await waitFor(() => {
     expect(screen.getByLabelText(/close/i)).toBeInTheDocument();
   });
-  const closeButton = screen.getByLabelText(/close/i);
-
   await act(async () => {
-    fireEvent.click(closeButton);
+    fireEvent.click(screen.getByLabelText(/close/i));
   });
-
   const items = screen.queryAllByRole('listitem');
   expect(items).toHaveLength(0);
 });
