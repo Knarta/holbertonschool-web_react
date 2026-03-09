@@ -1,30 +1,29 @@
 import React, { useContext } from 'react';
+import { useContext } from 'react';
 import holbertonLogo from '../assets/holberton-logo.jpg';
-import AppContext from '../Context/context.js';
+import newContext from '../Context/context.js';
 
 function Header() {
-  const { user, logOut } = useContext(AppContext);
-
+  const { user, logOut } = useContext(newContext);
   return (
     <>
-      <header className="App-header flex flex-col max-[520px]:items-center max-[520px]:gap-2 sm:flex-row border-b-2 border-[var(--main-color)]">
-        <img src={holbertonLogo} alt="holberton logo" className="h-[250px] w-[250px] max-[520px]:h-[150px] max-[520px]:w-[150px]" />
-        <h1 className="flex items-center text-[var(--main-color)] max-[520px]:text-lg sm:text-xl md:text-2xl">School dashboard</h1>
+      <header className="App-header flex flex-col tablet:flex-row items-center gap-2 tablet:gap-4 py-4">
+        <img
+          className="h-32 w-32 tablet:h-40 tablet:w-40 desktop:h-[250px] desktop:w-[250px]"
+          src={holbertonLogo}
+          alt="holberton logo"
+        />
+        <h1 className="text-[var(--main-color)] text-2xl tablet:text-3xl desktop:text-5xl font-bold">
+          School dashboard
+        </h1>
       </header>
       {user.isLoggedIn && (
-        <div id="logoutSection">
-          Welcome {user.email} (
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              logOut();
-            }}
-          >
-            logout
+        <section id="logoutSection" className="pl-1">
+          Welcome <span className="font-bold">{user.email}</span>{' '}
+          <a className="italic" href="#" onClick={logOut}>
+            (logout)
           </a>
-          )
-        </div>
+        </section>
       )}
     </>
   );
