@@ -1,6 +1,16 @@
 import { expect, jest, test } from '@jest/globals';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
+import axios from 'axios';
 import App from './App.jsx';
+
+const mockNotifications = [
+  { id: 1, type: 'default', value: 'New course available' },
+  { id: 2, type: 'urgent', value: 'New resume available' },
+  { id: 3, type: 'urgent', html: '<strong>Urgent requirement</strong> - complete by EOD' },
+];
+
+jest.mock('axios');
+axios.get.mockResolvedValue({ data: mockNotifications });
 
 test('should render title', () => {
   render(<App />);
@@ -110,18 +120,26 @@ test('should show logoutSection and hide it after clicking logout link', async (
 
 test('handleDisplayDrawer opens the notifications drawer', async () => {
   render(<App />);
+  await waitFor(() => {
+    expect(screen.getAllByRole('listitem').length).toBeGreaterThanOrEqual(0);
+  });
   const notificationTitle = screen.getByText(/Your notifications/i);
 
   await act(async () => {
     fireEvent.click(notificationTitle);
   });
 
-  const items = screen.getAllByRole('listitem');
-  expect(items).toHaveLength(3);
+  await waitFor(() => {
+    const items = screen.getAllByRole('listitem');
+    expect(items).toHaveLength(3);
+  });
 });
 
 test('handleHideDrawer closes the notifications drawer when close button is clicked', async () => {
   render(<App />);
+  await waitFor(() => {
+    expect(screen.getByLabelText(/close/i)).toBeInTheDocument();
+  });
   const closeButton = screen.getByLabelText(/close/i);
 
   await act(async () => {
@@ -176,9 +194,12 @@ test('clicking on a notification item should remove it from the notification lis
 
   render(<App />);
 
-  const items = screen.getAllByRole('listitem');
-  expect(items).toHaveLength(3);
+  await waitFor(() => {
+    const items = screen.getAllByRole('listitem');
+    expect(items).toHaveLength(3);
+  });
 
+  const items = screen.getAllByRole('listitem');
   consoleLogSpy.mockClear();
   await act(async () => {
     fireEvent.click(items[0]);
@@ -188,8 +209,10 @@ test('clicking on a notification item should remove it from the notification lis
     'Notification 1 has been marked as read',
   );
 
-  const remainingItems = screen.queryAllByRole('listitem');
-  expect(remainingItems).toHaveLength(2);
+  await waitFor(() => {
+    const remainingItems = screen.queryAllByRole('listitem');
+    expect(remainingItems).toHaveLength(2);
+  });
 
   consoleLogSpy.mockRestore();
 });
