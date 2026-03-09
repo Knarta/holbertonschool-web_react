@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Header from './Header';
-import AppContext from '../Context/context';
+// eslint-disable-next-line no-unused-vars
+import newContext from '../Context/context';
 
 describe('Header component', () => {
   test('renders without crashing', () => {
@@ -32,9 +33,9 @@ describe('Header component', () => {
     };
 
     render(
-      <AppContext.Provider value={contextValue}>
+      <newContext.Provider value={contextValue}>
         <Header />
-      </AppContext.Provider>
+      </newContext.Provider>
     );
 
     expect(document.getElementById('logoutSection')).toBeInTheDocument();
@@ -49,9 +50,9 @@ describe('Header component', () => {
     };
 
     render(
-      <AppContext.Provider value={contextValue}>
+      <newContext.Provider value={contextValue}>
         <Header />
-      </AppContext.Provider>
+      </newContext.Provider>
     );
 
     fireEvent.click(screen.getByText(/\(logout\)/i));

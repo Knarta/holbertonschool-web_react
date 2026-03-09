@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import holbertonLogo from '../assets/holberton-logo.jpg';
-import AppContext from '../Context/context.js';
+import newContext from '../Context/context.js';
 
 function Header() {
-  const { user, logOut } = useContext(AppContext);
+  const { user, logOut } = useContext(newContext);
   return (
     <>
       <header className="App-header flex flex-col tablet:flex-row items-center gap-2 tablet:gap-4 py-4">

@@ -1,66 +1,69 @@
-import React, { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 function Login(props) {
-  const { logIn = () => {} } = props;
-  const [enableSubmit, setEnableSubmit] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
 
-  const handleSubmitEnable = (emailVal, passwordVal) => {
+  const enableSubmit = useMemo(() => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const emailValid = emailVal.length > 0 && regex.test(emailVal);
-    const passwordValid = passwordVal.length >= 8;
-    setEnableSubmit(emailValid && passwordValid);
-  };
+    const emailValid = formData.email.length > 0 && regex.test(formData.email);
+    const passwordValid = formData.password.length >= 8;
+    return emailValid && passwordValid;
+  }, [formData]);
 
-  const handleChangeEmail = (e) => {
+  function handleChangeEmail(e) {
     const newEmail = e.target.value;
-    setFormData((prev) => ({ ...prev, email: newEmail }));
-    handleSubmitEnable(newEmail, formData.password);
-  };
+    setFormData((prevData) => ({
+      ...prevData,
+      email: newEmail,
+    }));
+  }
 
-  const handleChangePassword = (e) => {
+  function handleChangePassword(e) {
     const newPassword = e.target.value;
-    setFormData((prev) => ({ ...prev, password: newPassword }));
-    handleSubmitEnable(formData.email, newPassword);
-  };
+    setFormData((prevData) => ({
+      ...prevData,
+      password: newPassword,
+    }));
+  }
 
-  const handleLoginSubmit = (e) => {
+  function handleLoginSubmit(e) {
     e.preventDefault();
-    logIn(formData.email, formData.password);
-  };
+    props.logIn(formData.email, formData.password);
+  }
 
   return (
-    <div className="App-body h-full mt-5 ml-5 border-t-2 border-[var(--main-color)] pt-5 max-[640px]:ml-0 max-[640px]:pl-4">
-      <p>Login to access the full dashboard</p>
+    <div className="App-body border-t-2 border-(--main-color) h-full">
+      <p className="mt-5 tablet:ml-10">Login to access the full dashboard</p>
       <form
-        className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-x-4 sm:gap-y-2 max-w-md"
+        className="tablet:ml-10 mt-5 flex flex-col justify-between tablet:block"
         onSubmit={handleLoginSubmit}
       >
-        <label htmlFor="email" className="mr-0 sm:mr-2">Email:</label>
+        <label htmlFor="email">Email</label>
         <input
+          className="w-50 tablet:w-57 border border-black tablet:ml-1.5 rounded p-1 tablet:mt-0 mt-1.5"
           type="email"
           id="email"
           autoComplete="email"
-          className="w-full sm:w-auto min-w-0 sm:mr-4 max-[640px]:max-w-full p-2 border border-gray-300 rounded"
           value={formData.email}
           onChange={handleChangeEmail}
         />
-        <label htmlFor="password" className="mr-0 sm:mr-2">Password:</label>
+        <label className="tablet:ml-1.5 tablet:mt-0 mt-1.5" htmlFor="password">
+          Password
+        </label>
         <input
+          className="w-50 tablet:w-57 border border-black tablet:ml-1.5 rounded p-1 tablet:mt-0 mt-1.5"
           type="password"
           id="password"
           autoComplete="current-password"
-          className="w-full sm:w-auto min-w-0 sm:mr-4 max-[640px]:max-w-full p-2 border border-gray-300 rounded"
           value={formData.password}
           onChange={handleChangePassword}
         />
-        <button
+        <input
           type="submit"
-          className="mt-2 px-4 py-2 self-start"
+          value="OK"
+          className="tablet:ml-1.5 tablet:mt-0 mt-1.5 w-8 h-8 cursor-pointer border border-black rounded p-1 text-base font-medium text-center disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={!enableSubmit}
-        >
-          OK
-        </button>
+        />
       </form>
     </div>
   );

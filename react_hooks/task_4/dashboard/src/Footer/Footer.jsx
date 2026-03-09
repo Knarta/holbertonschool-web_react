@@ -1,18 +1,18 @@
 import { useContext } from 'react';
+import newContext from '../Context/context.js';
 import { getCurrentYear, getFooterCopy } from '../utils/utils.js';
-import AppContext from '../Context/context.js';
 
-function Footer() {
-  const { user } = useContext(AppContext);
+function Footer({ isIndex }) {
+  const { user } = useContext(newContext);
 
   return (
-    <footer className="App-footer flex justify-center border-t-2 border-[var(--main-color)] py-4 text-center mt-auto">
-      <p className="text-xs sm:text-sm md:text-base italic">
-        Copyright {getCurrentYear()} - {getFooterCopy(true)}
+    <footer className="App-footer mt-auto relative flex flex-row items-center justify-center border-t-3 border-[var(--main-color)] py-4">
+      <p className="italic text-xs tablet:text-sm desktop:text-base">
+        Copyright {getCurrentYear()} - {getFooterCopy(isIndex)}
       </p>
       {user.isLoggedIn && (
-        <p>
-          <a href="/contact">Contact us</a>
+        <p className="absolute right-4">
+          <a href="#">Contact us</a>
         </p>
       )}
     </footer>

@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
 import Login from './Login';
 import userEvent from '@testing-library/user-event';
@@ -38,5 +39,39 @@ describe('Login component', () => {
     expect(emailInput).toHaveFocus();
     await userEvent.click(passwordLabel);
     expect(passwordInput).toHaveFocus();
+  });
+
+  test('submit button is disabled by default', () => {
+    render(<Login />);
+    const submitButton = screen.getByRole('button', { name: /ok/i });
+    expect(submitButton).toBeDisabled();
+  });
+
+  test('submit button becomes enabled after valid email and password', async () => {
+    render(<Login />);
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /ok/i });
+
+    expect(submitButton).toBeDisabled();
+
+    await userEvent.type(emailInput, 'user@test.com');
+    await userEvent.type(passwordInput, '12345678');
+
+    expect(submitButton).toBeEnabled();
+  });
+
+  test('logIn prop is called with email and password on form submit', async () => {
+    const logInMock = jest.fn();
+    render(<Login logIn={logInMock} />);
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /ok/i });
+
+    await userEvent.type(emailInput, 'user@test.com');
+    await userEvent.type(passwordInput, '12345678');
+    await userEvent.click(submitButton);
+
+    expect(logInMock).toHaveBeenCalledWith('user@test.com', '12345678');
   });
 });
