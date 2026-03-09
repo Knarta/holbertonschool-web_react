@@ -90,7 +90,11 @@ class App extends React.Component {
           </BodySectionWithMargin>
         ) : (
           <BodySectionWithMargin title="Log in to continue">
-            <Login />
+            <Login
+              logIn={this.logIn}
+              email={this.state.user.email}
+              password={this.state.user.password}
+            />
           </BodySectionWithMargin>
         )}
         <Footer />
