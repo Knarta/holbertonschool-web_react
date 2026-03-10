@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import CourseListRow from './CourseListRow';
 import { render, screen } from '@testing-library/react';
 

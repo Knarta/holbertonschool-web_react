@@ -1,10 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { getLatestNotification } from '../utils/utils.js';
-import {
-  getNotificationsCacheData,
-  setNotificationsCacheData,
-} from './notificationsCache.js';
 import Notifications from '../Notifications/Notifications.jsx';
 import Header from '../Header/Header.jsx';
 import Login from '../Login/Login.jsx';
@@ -18,16 +14,18 @@ import AppContext, { defaultUser } from '../Context/context.js';
 const LoginWithLogging = WithLogging(Login);
 const CourseListWithLogging = WithLogging(CourseList);
 
+const notificationsCache = { data: null };
+
 function App() {
   const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState({ ...defaultUser });
   const [notifications, setNotifications] = useState(
-    () => getNotificationsCacheData() ?? []
+    () => notificationsCache.data ?? []
   );
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    if (getNotificationsCacheData() !== null) {
+    if (notificationsCache.data !== null) {
       return;
     }
     const fetchNotifications = async () => {
@@ -43,13 +41,13 @@ function App() {
           }
           return notif;
         });
-        setNotificationsCacheData(data);
+        notificationsCache.data = data;
         setNotifications(data);
       } catch (err) {
         if (process.env.NODE_ENV === 'development') {
           console.error('Failed to fetch notifications:', err);
         }
-        setNotificationsCacheData([]);
+        notificationsCache.data = [];
         setNotifications([]);
       }
     };
@@ -96,7 +94,7 @@ function App() {
     console.log(`Notification ${id} has been marked as read`);
     setNotifications((prev) => {
       const next = prev.filter((notif) => notif.id !== id);
-      setNotificationsCacheData(next);
+      notificationsCache.data = next;
       return next;
     });
   }, []);
@@ -162,3 +160,7 @@ function App() {
 }
 
 export default App;
+/* eslint-disable-next-line react-refresh/only-export-components -- needed for test cleanup */
+export function resetNotificationsCache() {
+  notificationsCache.data = null;
+}

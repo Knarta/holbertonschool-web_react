@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { render, fireEvent, screen, cleanup } from '@testing-library/react';
 import Notifications from './Notifications.jsx';
 import { getLatestNotification } from '../utils/utils.js';
