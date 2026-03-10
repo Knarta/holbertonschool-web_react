@@ -1,6 +1,10 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { getLatestNotification } from '../utils/utils.js';
+import {
+  getNotificationsCacheData,
+  setNotificationsCacheData,
+} from './notificationsCache.js';
 import Notifications from '../Notifications/Notifications.jsx';
 import Header from '../Header/Header.jsx';
 import Login from '../Login/Login.jsx';
@@ -15,12 +19,16 @@ const LoginWithLogging = WithLogging(Login);
 const CourseListWithLogging = WithLogging(CourseList);
 
 function App() {
+  const cache = getNotificationsCache();
   const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState({ ...defaultUser });
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState(() => cache.data ?? []);
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
+    if (cache.data !== null) {
+      return;
+    }
     const fetchNotifications = async () => {
       try {
         const response = await axios.get('http://localhost:5173/notifications.json');
@@ -34,11 +42,13 @@ function App() {
           }
           return notif;
         });
+        cache.data = data;
         setNotifications(data);
       } catch (err) {
         if (process.env.NODE_ENV === 'development') {
           console.error('Failed to fetch notifications:', err);
         }
+        cache.data = [];
         setNotifications([]);
       }
     };
@@ -83,7 +93,11 @@ function App() {
 
   const markNotificationAsRead = useCallback((id) => {
     console.log(`Notification ${id} has been marked as read`);
-    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
+    setNotifications((prev) => {
+      const next = prev.filter((notif) => notif.id !== id);
+      cache.data = next;
+      return next;
+    });
   }, []);
 
   const handleKeyDown = useCallback((event) => {
