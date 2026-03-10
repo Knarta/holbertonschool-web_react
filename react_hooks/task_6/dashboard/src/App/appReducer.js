@@ -25,6 +25,9 @@ export const initialState = {
 };
 
 export function appReducer(state = initialState, action) {
+  if (!action || action.type === undefined) {
+    return state;
+  }
   switch (action.type) {
     case APP_ACTIONS.LOGIN:
       return {
@@ -39,7 +42,7 @@ export function appReducer(state = initialState, action) {
     case APP_ACTIONS.LOGOUT:
       return {
         ...state,
-        user: { ...defaultUser },
+        user: defaultUser,
       };
 
     case APP_ACTIONS.TOGGLE_DRAWER:
