@@ -32,9 +32,9 @@ function Notifications({
                     Here is the list of notifications
                   </p>
                   <ul className="list-disc p-1 pl-6 tablet:pl-4">
-                    {notifications.map((notif) => (
+                    {notifications.map((notif, index) => (
                       <NotificationItem
-                        key={notif.id}
+                        key={notif.id ?? index}
                         id={notif.id}
                         type={notif.type}
                         value={notif.value}
