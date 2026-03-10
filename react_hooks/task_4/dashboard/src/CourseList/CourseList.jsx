@@ -19,9 +19,9 @@ function CourseList({ courses = [] }) {
           </thead>
           <tbody>
             {
-              courses.map(course => {
+              courses.map((course, index) => {
                 return <CourseListRow
-                  key={course.id}
+                  key={course.id ?? index}
                   isHeader={false}
                   textFirstCell={course.name}
                   textSecondCell={course.credit}
