@@ -50,7 +50,22 @@ test('should fetch notifications data on initial render', async () => {
 
 test('should fetch courses data when user state changes', async () => {
   await renderApp();
-  expect(axios.get).toHaveBeenCalledWith('http://localhost:5173/courses.json');
+
+  await act(async () => {
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: 'test@test.com' },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password123' },
+    });
+    fireEvent.click(screen.getByText(/ok/i));
+  });
+
+  await waitFor(() => {
+    expect(axios.get).toHaveBeenCalledWith(
+      'http://localhost:5173/courses.json'
+    );
+  });
 });
 
 test('should render title', async () => {
