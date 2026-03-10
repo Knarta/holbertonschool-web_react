@@ -19,14 +19,15 @@ const LoginWithLogging = WithLogging(Login);
 const CourseListWithLogging = WithLogging(CourseList);
 
 function App() {
-  const cache = getNotificationsCache();
   const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState({ ...defaultUser });
-  const [notifications, setNotifications] = useState(() => cache.data ?? []);
+  const [notifications, setNotifications] = useState(
+    () => getNotificationsCacheData() ?? []
+  );
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    if (cache.data !== null) {
+    if (getNotificationsCacheData() !== null) {
       return;
     }
     const fetchNotifications = async () => {
@@ -42,13 +43,13 @@ function App() {
           }
           return notif;
         });
-        cache.data = data;
+        setNotificationsCacheData(data);
         setNotifications(data);
       } catch (err) {
         if (process.env.NODE_ENV === 'development') {
           console.error('Failed to fetch notifications:', err);
         }
-        cache.data = [];
+        setNotificationsCacheData([]);
         setNotifications([]);
       }
     };
@@ -95,7 +96,7 @@ function App() {
     console.log(`Notification ${id} has been marked as read`);
     setNotifications((prev) => {
       const next = prev.filter((notif) => notif.id !== id);
-      cache.data = next;
+      setNotificationsCacheData(next);
       return next;
     });
   }, []);
