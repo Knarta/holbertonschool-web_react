@@ -18,6 +18,7 @@ export default defineConfig([
       globals: {
         ...globals.browser,
         ...globals.jest,
+        process: 'readonly',
       },
       parserOptions: {
         ecmaVersion: 'latest',

@@ -1,8 +1,6 @@
 import '@testing-library/jest-dom';
 import axios from 'axios';
 
-jest.mock('axios');
-
 const mockNotifications = [
   { id: 1, type: 'default', value: 'New course available' },
   { id: 2, type: 'urgent', value: 'New resume available' },
@@ -15,12 +13,15 @@ const mockCourses = [
   { id: 3, name: 'React', credit: 40 },
 ];
 
-axios.get.mockImplementation((url) => {
-  if (url && url.includes('notifications.json')) {
-    return Promise.resolve({ data: mockNotifications });
+axios.useRequestHandler((req) => {
+  const url = req.config?.url || req.url || '';
+  if (url.includes('notifications.json')) {
+    axios.mockResponse({ data: mockNotifications }, req);
+  } else if (url.includes('courses.json')) {
+    axios.mockResponse({ data: mockCourses }, req);
   }
-  if (url && url.includes('courses.json')) {
-    return Promise.resolve({ data: mockCourses });
-  }
-  return Promise.reject(new Error('Not found'));
+});
+
+afterEach(() => {
+  axios.reset();
 });

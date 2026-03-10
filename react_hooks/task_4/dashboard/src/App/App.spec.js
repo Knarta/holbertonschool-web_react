@@ -3,32 +3,9 @@ import { useState, useCallback, useEffect } from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import App from './App.jsx';
-import { getLatestNotification } from '../utils/utils.js';
 import AppContext from '../Context/context.js';
 
-const notificationsData = [
-  { id: 1, type: 'default', value: 'New course available' },
-  { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', html: getLatestNotification() },
-];
-
-const coursesData = [
-  { id: 1, name: 'ES6', credit: 60 },
-  { id: 2, name: 'Webpack', credit: 20 },
-  { id: 3, name: 'React', credit: 40 },
-];
-
 async function renderApp() {
-  axios.get.mockImplementation((url) => {
-    if (url.includes('notifications.json')) {
-      return Promise.resolve({ data: notificationsData });
-    }
-    if (url.includes('courses.json')) {
-      return Promise.resolve({ data: coursesData });
-    }
-    return Promise.reject(new Error('Not found'));
-  });
-
   let result;
   await act(async () => {
     result = render(<App />);

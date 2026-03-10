@@ -35,7 +35,10 @@ function App() {
           return notif;
         });
         setNotifications(data);
-      } catch {
+      } catch (err) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Failed to fetch notifications:', err);
+        }
         setNotifications([]);
       }
     };
@@ -48,7 +51,10 @@ function App() {
         const response = await axios.get('http://localhost:5173/courses.json');
         const coursesData = response.data.courses || response.data;
         setCourses(coursesData);
-      } catch {
+      } catch (err) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Failed to fetch courses:', err);
+        }
         setCourses([]);
       }
     };
