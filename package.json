@@ -481,12 +481,16 @@
     "@babel/preset-env": "^7.24.8",
     "@babel/preset-react": "^7.24.7",
     "@tailwindcss/vite": "^4.2.0",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^4.7.0",
+    "babel-jest": "^30.1.2",
     "identity-obj-proxy": "^3.0.0",
+    "jest": "^30.1.3",
     "jest-environment-jsdom": "^29.7.0",
+    "jest-mock-axios": "^4.9.0",
     "tailwindcss": "^4.2.0",
     "vite": "^5.4.21"
   },
@@ -494,7 +498,30 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/*.spec.js"
+    ],
+    "moduleNameMapper": {
+      "^axios$": "jest-mock-axios",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|oga)$": "<rootDir>/fileTransformer.cjs",
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    },
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@reduxjs/toolkit|react-redux)/)"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.js"
+    ]
   },
   "keywords": [],
   "author": "",
