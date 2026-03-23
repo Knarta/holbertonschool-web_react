@@ -17,7 +17,7 @@ describe('authSlice', () => {
 
     expect(state.user.email).toBe(payload.email);
     expect(state.user.password).toBe(payload.password);
-    expect(state.user.isLoggedIn).toBe(true);
+    expect(state.isLoggedIn).toBe(true);
   });
 
   it('resets the state correctly when the logout action is dispatched', () => {
@@ -29,6 +29,6 @@ describe('authSlice', () => {
 
     expect(state.user.email).toBe('');
     expect(state.user.password).toBe('');
-    expect(state.user.isLoggedIn).toBe(false);
+    expect(state.isLoggedIn).toBe(false);
   });
 });
