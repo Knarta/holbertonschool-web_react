@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     cursor: "pointer",
   },
+  logoutSection: {
+    marginLeft: "auto",
+  },
 });
 
 export default function Header({ user, logOut }) {
