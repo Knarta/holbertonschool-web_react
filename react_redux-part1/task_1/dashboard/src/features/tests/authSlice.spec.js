@@ -1,34 +1,54 @@
 import mockAxios from 'jest-mock-axios';
-import authReducer, { login, logout, initialState } from '../auth/authSlice';
+import axios from 'axios';
+import authReducer, { login, logout } from '../auth/authSlice';
 
 afterEach(() => {
   mockAxios.reset();
 });
 
 describe('authSlice', () => {
-  it('returns the correct initial state by default', () => {
-    const state = authReducer(undefined, { type: '@@INIT' });
-    expect(state).toEqual(initialState);
+  const initialState = {
+    user: {
+      email: '',
+      password: '',
+    },
+    isLoggedIn: false,
+  };
+
+  it('should return the correct initial state by default', () => {
+    expect(authReducer(undefined, { type: 'unknown' })).toEqual(initialState);
   });
 
-  it('updates the state correctly when the login action is dispatched', () => {
-    const payload = { email: 'user@example.com', password: 'hunter2' };
-    const state = authReducer(initialState, login(payload));
+  it('should update the state correctly when login is dispatched', async () => {
+    const credentials = { email: 'user@test.com', password: 'secret123' };
 
-    expect(state.user.email).toBe(payload.email);
-    expect(state.user.password).toBe(payload.password);
-    expect(state.user.isLoggedIn).toBe(true);
+    const request = axios.post('/login', credentials);
+
+    mockAxios.mockResponse({ data: credentials });
+
+    const response = await request;
+    const state = authReducer(initialState, login(response.data));
+
+    expect(state.user.email).toBe(credentials.email);
+    expect(state.user.password).toBe(credentials.password);
+    expect(state.isLoggedIn).toBe(true);
   });
 
-  it('resets the state correctly when the logout action is dispatched', () => {
-    const afterLogin = authReducer(
-      initialState,
-      login({ email: 'logged@in.com', password: 'secret' })
-    );
-    const state = authReducer(afterLogin, logout());
+  it('should reset the state correctly when logout is dispatched', async () => {
+    const loggedInState = {
+      user: { email: 'user@test.com', password: 'secret123' },
+      isLoggedIn: true,
+    };
+
+    const request = axios.post('/logout');
+
+    mockAxios.mockResponse({ data: {} });
+
+    await request;
+    const state = authReducer(loggedInState, logout());
 
     expect(state.user.email).toBe('');
     expect(state.user.password).toBe('');
-    expect(state.user.isLoggedIn).toBe(false);
+    expect(state.isLoggedIn).toBe(false);
   });
 });
