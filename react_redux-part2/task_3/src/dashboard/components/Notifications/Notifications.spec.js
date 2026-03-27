@@ -123,8 +123,6 @@ test('Clicking close button toggles the visible class off the drawer', () => {
 });
 
 test('Marking a notification as read removes it from the list', () => {
-  const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-
   const store = createStore({
     notifications: {
       notifications: [
@@ -149,8 +147,6 @@ test('Marking a notification as read removes it from the list', () => {
   expect(screen.getAllByRole('listitem')).toHaveLength(1);
   expect(screen.queryByText('New course available')).not.toBeInTheDocument();
   expect(screen.getByText('New resume available')).toBeInTheDocument();
-
-  consoleSpy.mockRestore();
 });
 
 test('Drawer is hidden by default (no visible class)', () => {

@@ -4,7 +4,7 @@ import closeIcon from '../../assets/close-icon.png';
 import NotificationItem from '../NotificationItem/NotificationItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { markNotificationAsRead } from '../../features/notifications/notificationsSlice';
-import { getFilteredNotifications } from '../../features/selectors/notificationsSelector';
+import { getFilteredNotifications } from '../../features/selectors/notificationSelector';
 
 const opacityKeyframes = {
   from: {

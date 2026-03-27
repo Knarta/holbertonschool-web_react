@@ -156,7 +156,7 @@ const Notifications = memo(function Notifications() {
                 onClick={handleSetFilterDefault}
                 aria-label="Filter default"
               >
-                💠
+                ??
               </button>
             </p>
             <button

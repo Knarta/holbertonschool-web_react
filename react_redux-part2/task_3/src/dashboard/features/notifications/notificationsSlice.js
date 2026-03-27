@@ -34,7 +34,6 @@ const notificationsSlice = createSlice({
   reducers: {
     markNotificationAsRead: (state, action) => {
       const notificationId = action.payload;
-      console.log(`Marking notification ${notificationId} as read`);
       state.notifications = state.notifications.filter(
         (notification) => notification.id !== notificationId,
       );
