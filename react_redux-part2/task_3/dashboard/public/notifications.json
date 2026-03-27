@@ -1,0 +1,58 @@
+{
+  "notifications": [
+    {
+      "id": 1,
+      "type": "default",
+      "context": {
+        "guid": "2d8e40be-1c78-4de0-afc9-fcc147afd4d2",
+        "isRead": true,
+        "value": "New course available"
+      }
+    },
+    {
+      "id": 2,
+      "type": "urgent",
+      "context": {
+        "guid": "11debd7f-e97e-4c52-a5d2-6c88a3e62bfb",
+        "isRead": false,
+        "value": "New resume available"
+      }
+    },
+    {
+      "id": 3,
+      "type": "urgent",
+      "context": {
+        "guid": "3c88a3e6-2bfb-11de-bd7f-e97e4c52a5d2",
+        "isRead": false,
+        "value": "Urgent requirement - complete by EOD"
+      }
+    },
+    {
+      "id": 4,
+      "type": "default",
+      "context": {
+        "guid": "4e97e4c5-2a5d-26c8-8a3e-62bfb11debd7",
+        "isRead": false,
+        "value": "Project review available"
+      }
+    },
+    {
+      "id": 5,
+      "type": "urgent",
+      "context": {
+        "guid": "5c52a5d2-6c88-a3e6-2bfb-11debd7fe97e",
+        "isRead": true,
+        "value": "Server maintenance scheduled"
+      }
+    },
+    {
+      "id": 6,
+      "type": "default",
+      "context": {
+        "guid": "6c88a3e6-2bfb-11de-bd7f-e97e4c52a5d2",
+        "isRead": false,
+        "value": "New assignment posted"
+      }
+    }
+  ]
+}
